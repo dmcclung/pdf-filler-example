@@ -2,9 +2,11 @@ package io.basereport.handlers;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
+import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
 
 import java.io.File;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class PdfRequestHandler implements RequestHandler<Request, Response> {
+    private static Logger log = Logger.getLogger(PdfRequestHandler.class);
+
     @Override
     public Response handleRequest(Request req, Context context) {
         String formTemplate = "src/main/resources/io/basereport/handlers/exampleForm.pdf";
@@ -23,9 +27,12 @@ public class PdfRequestHandler implements RequestHandler<Request, Response> {
             PDAcroForm acroForm = pdfDocument.getDocumentCatalog().getAcroForm();
 
             // as there might not be an AcroForm entry a null check is necessary
-            if (acroForm != null)
-            {
-                // TODO: Dump out all the fields
+            if (acroForm != null) {
+                if (log.isDebugEnabled()) {
+                    for (PDField field : acroForm.getFields()) {
+                        log.debug("PDF field mapping: " + field.getMappingName());
+                    }
+                }
 
                 List<ClientEntity> entities = req.getEntities();
                 for (ClientEntity entity : entities) {
