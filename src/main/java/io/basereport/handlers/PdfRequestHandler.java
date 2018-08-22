@@ -14,9 +14,7 @@ import java.util.Map;
 public class PdfRequestHandler implements RequestHandler<Request, Response> {
     @Override
     public Response handleRequest(Request req, Context context) {
-
-        // TODO: Figure out our template
-        String formTemplate = "src/main/resources/org/apache/pdfbox/examples/interactive/form/FillFormField.pdf";
+        String formTemplate = "src/main/resources/io/basereport/handlers/exampleForm.pdf";
 
         try {
             PDDocument pdfDocument = PDDocument.load(new File(formTemplate));
