@@ -9,7 +9,7 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 public class PdfRequestHandler implements RequestHandler<Request, Response> {
     @Override
@@ -25,17 +25,19 @@ public class PdfRequestHandler implements RequestHandler<Request, Response> {
             // as there might not be an AcroForm entry a null check is necessary
             if (acroForm != null)
             {
-                Map<String, String>[] fieldMaps = req.getFieldMaps();
-                for (Map<String, String> fieldMap : fieldMaps) {
+                // TODO: Dump out all the fields
+
+                List<ClientEntity> entities = req.getEntities();
+                for (ClientEntity entity : entities) {
 
                     // Retrieve an individual field and set its value.
                     PDTextField field = (PDTextField) acroForm.getField( "sampleField" );
-                    field.setValue(fieldMap.get("sampleField"));
+                    field.setValue(entity.getId());
 
                     // If a field is nested within the form tree a fully qualified name
                     // might be provided to access the field.
                     field = (PDTextField) acroForm.getField( "fieldsContainer.nestedSampleField" );
-                    field.setValue(fieldMap.get("fieldsContainer.nestedSampleField"));
+                    field.setValue(entity.getDescription());
 
                     // Save and close the filled out form.
                     // TODO: Save this document to s3 or stream back?

@@ -1,20 +1,20 @@
 package io.basereport.handlers;
 
-import java.util.Map;
+import java.util.List;
 
 public class Request {
-    private Map<String, String>[] fieldMaps;
+    private List<ClientEntity> entities;
 
-    public Request(Map<String, String>[] fieldMaps) {
-        this.fieldMaps = fieldMaps;
+    public Request(List<ClientEntity> entities) {
+        this.entities = entities;
     }
 
-    public Map<String, String>[] getFieldMaps() {
-        return fieldMaps;
+    public List<ClientEntity> getEntities() {
+        return entities;
     }
 
-    public void setFieldMaps(Map<String, String>[] fieldMaps) {
-        this.fieldMaps = fieldMaps;
+    public void setEntities(List<ClientEntity> entities) {
+        this.entities = entities;
     }
 
 }
